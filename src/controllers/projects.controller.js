@@ -1,11 +1,73 @@
+import { Project } from "../models/Projects.js";
 
+export const getProjects = async (req, res) => {
+  const allProjects = await Project.findAll();
 
+  res.json(allProjects);
+};
 
-const getProject= (req,res)=>{
-    res.send('getting projects')
-}
+export const createProject = async (req, res) => {
+  const { name, priority, description } = req.body;
 
+  try {
+    const newProject = {
+      name,
+      priority,
+      description,
+    };
 
-const createProject= (req,res)=>{
-    res.send('creating projects')
-}
+    await Project.create(newProject);
+
+    res.status(200).json({ message: "create sucessfully" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateProject = async (req, res) => {
+  const { id } = req.params;
+  const { name, priority, description } = req.body;
+  try {
+    const updatedProject = await Project.findByPk(id);
+    if (updatedProject) {
+      await updatedProject.update({
+        name,
+        priority,
+        description,
+      });
+
+      await updatedProject.save();
+      res.status(200).json({ message: "Project modify sucessfully" });
+    } else {
+      res.status(404).json({ message: "Project no found!" });
+    }
+  } catch (error) {
+    console.error("Error al modificar el objeto:", error);
+    res.status(500).json({ mensaje: "Error to modify Project" });
+  }
+};
+
+export const deleteProject = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deletedProject = await Project.findByPk(id);
+    await deletedProject.destroy();
+    res.status(200).json({ message: "Project destroyed sucessfully" });
+  } catch (error) {
+    console.error("Error al modificar el objeto:", error);
+    res.status(500).json({ mensaje: "Error to destroy the Project" });
+  }
+};
+export const getProject = async (req, res) => {
+    const {id} = req.params;
+    try {
+        const project= await Project.findByPk(id);
+        res.json(project);
+        
+        
+    } catch (error) {
+        res.status(500).json({ mensaje: "Error to find a specific project" });
+    }
+  
+  };
+  
