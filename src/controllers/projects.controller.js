@@ -1,4 +1,5 @@
 import { Project } from "../models/Projects.js";
+import { Task } from "../models/Task.js";
 
 export const getProjects = async (req, res) => {
   const allProjects = await Project.findAll();
@@ -71,3 +72,14 @@ export const getProject = async (req, res) => {
   
   };
   
+export const getProjectTasks = async(req,res) => {
+  try {
+    const {id} = req.params
+    const tasks = await Task.findAll({
+      where:{projectid:id}
+    })
+    res.json(tasks)
+} catch (error) {
+  res.status(500).json({ mensaje: "Error to find a specific tasks from a Project" });
+}
+}
