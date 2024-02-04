@@ -8,7 +8,7 @@ app.use(express.json());
 
 app.use(projectsRoutes);
 app.use(taskRoutes)
-app.use(morgan)
+app.use(morgan('dev'))
 
 
 export default app;
