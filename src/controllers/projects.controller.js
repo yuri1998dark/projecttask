@@ -19,7 +19,7 @@ export const createProject = async (req, res) => {
 
     await Project.create(newProject);
 
-    res.status(200).json({ message: "create sucessfully" });
+    res.status(200).json({ message: "create sucessfully",name });
   } catch (error) {
     console.log(error);
   }
